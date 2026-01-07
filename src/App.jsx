@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import MovieForm from './components/MovieForm'
+import MovieList from './components/MovieList'
 import './App.css'
 
- const GENRE=["Drama","Sci-Fi","Action","Comedy"]
+ const GENRE=["Drama","Sci-Fi","Action","Comedy","Other"]
 
  function createId() {
   if(typeof crypto !== "undefined" && crypto.randomUUID){
@@ -17,7 +18,7 @@ function App() {
     {id: createId(), title: 'Conjuring',genre:"Horror",watched: false}
   ]);
 
-  function handleAddMovie(moviedata) {
+  function handleAddMovie(data) {
     const newMovie= {
       id: createId(),
       ...data,
@@ -25,6 +26,17 @@ function App() {
 
     setMovie((prev) => [newMovie,...prev]);
   }
+
+  function toggleWatched(id) {
+    setMovie(prev => prev.map(movie => movie.id === id ? 
+      {...movie, watched: !movie.watched} : movie
+    ))
+  }
+
+  function handleDeleteMovie(id) {
+  setMovie(prev => prev.filter(e => e.id !== id));
+}
+
 
   return (
     <div className='page'>
@@ -41,14 +53,8 @@ function App() {
         </div>
         <div className='cardBody'>
          <MovieForm onAddMovie={handleAddMovie}/>
-         <ol>
-         {movies.map(movie => (
-         <li key={movie.id}>
-         {movie.title} ({movie.genre}) - {movie.watched ? "Watched" : "Unwatched"}
-         </li>
-         ))}
-        </ol>
-
+          <MovieList movies={movies} onToggleWatched={toggleWatched} onDeleteMovie={handleDeleteMovie}/>
+    
         </div>
 
       </section>
@@ -57,3 +63,4 @@ function App() {
 }
 
 export default App
+//next i have to create movie list and movie item 
