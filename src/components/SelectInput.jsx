@@ -1,9 +1,9 @@
 
-export default function ({label, value, onChange, options}) {
+export default function SelectInput({label, value, onChange, options}) {
   return (
     <div>
-        <label>{label}</label>
-        <select value={value} onChange={(e)=> onChange(e.target.value)}>
+        <label className="label">{label}</label>
+        <select className="input" value={value} onChange={(e)=> onChange(e.target.value)}>
          {options.map((opt)=>(
            <option key={opt} value={opt}>
             {opt}
@@ -13,4 +13,5 @@ export default function ({label, value, onChange, options}) {
     </div>
   )
 }
+
 

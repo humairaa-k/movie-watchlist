@@ -14,9 +14,10 @@ import './App.css'
 
 function App() {
   const [movies ,setMovie] = useState([
-    {id: createId(), title: 'John Wick',genre:"Action",watched: false},
+    {id: createId(), title: 'John Wick',genre:"Action",watched: true},
     {id: createId(), title: 'Conjuring',genre:"Horror",watched: false}
   ]);
+    const [filter, setFilter] = useState("all");
 
   function handleAddMovie(data) {
     const newMovie= {
@@ -26,41 +27,59 @@ function App() {
 
     setMovie((prev) => [newMovie,...prev]);
   }
-
-  function toggleWatched(id) {
-    setMovie(prev => prev.map(movie => movie.id === id ? 
-      {...movie, watched: !movie.watched} : movie
-    ))
+  
+  function handleToggleWatched(id) {
+    setMovie(prev => prev.map(movie => movie.id === id ?
+       { ...movie, watched: !movie.watched }
+          : movie
+      )
+    );
   }
 
   function handleDeleteMovie(id) {
   setMovie(prev => prev.filter(e => e.id !== id));
 }
 
+   const filteredMovies = movies.filter(movie => {
+    if (filter === "watched") return movie.watched;
+    if(filter === "unwatched") return !movie.watched;
+    return true;
+   })
+
+    const totalMovies = movies.length;
+    const watchedCount = movies.filter(m => m.watched).length;
+    const unwatchedCount = totalMovies - watchedCount;
 
   return (
     <div className='page'>
       <header className='header'>
         <div>
           <h1 className='title'> Movie Watchlist Manager</h1>
-          <p className='sub-title'> yap yap yap</p>
         </div>
       </header>
 
-      <section className='card'>
-        <div className='cardHeader'>
-          <h2 className='sectionTitle'> Add Movie</h2>
-        </div>
-        <div className='cardBody'>
-         <MovieForm onAddMovie={handleAddMovie}/>
-          <MovieList movies={movies} onToggleWatched={toggleWatched} onDeleteMovie={handleDeleteMovie}/>
-    
-        </div>
+      <MovieForm onAddMovie={handleAddMovie} />
 
-      </section>
+      <div className="filters row">
+        <button onClick={() => setFilter("all")}>All</button>
+        <button onClick={() => setFilter("watched")}>Watched</button>
+        <button onClick={() => setFilter("unwatched")}>Unwatched</button>
+      </div>
+
+      <div className="summary row">
+        <p>Total: {totalMovies}</p>
+        <p>Watched: {watchedCount}</p>
+        <p>Unwatched: {unwatchedCount}</p>
+      </div>
+
+     {totalMovies > 0 && watchedCount === totalMovies ? (
+      <p className="all-watched-msg"> You watched all movies!</p>
+      ) : (
+     <MovieList movies={filteredMovies} onToggle={handleToggleWatched} onDelete={handleDeleteMovie}/>
+      )}
+
     </div>
   )
 }
 
 export default App
-//next i have to create movie list and movie item 

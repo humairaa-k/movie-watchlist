@@ -29,13 +29,14 @@ import SelectInput from './SelectInput'
     <div className="row">
       <InputText label='Movie Title' value={title} onChange={setTitle} placeholder="e.g interstellar"/>
       <SelectInput label="Genre" value={genre} onChange={setGenre} options={GENRE}/>
-    </div>
+ 
 
     {error ? <p className='error'>{error}</p> : null }
 
     <button className='btn-primary' onClick={submit}>
        Add
     </button>
+       </div>
     </div>
    )
   

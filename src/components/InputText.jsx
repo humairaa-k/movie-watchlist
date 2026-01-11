@@ -1,5 +1,5 @@
 
-export default function ({label, value, onChange, placeholder, type='text' }) {
+export default function InputText ({label, value, onChange, placeholder, type='text' }) {
 
   return (
     <div>
@@ -13,3 +13,4 @@ export default function ({label, value, onChange, placeholder, type='text' }) {
     </div>
   )
 }
+
